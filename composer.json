@@ -22,5 +22,6 @@
     "psr-4": {
       "Paolooo\\LaravelDoctrine\\": "src/"
     }
-  }
+  },
+  "minimum-stability": "dev"
 }
