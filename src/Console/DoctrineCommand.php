@@ -11,19 +11,19 @@ use Symfony\Component\Console\Application as ConsoleApplication;
 
 class DoctrineCommand extends Command
 {
-	/**
-	 * The console command name.
-	 *
-	 * @var string
-	 */
-	protected $name = 'doctrine';
+     /**
+      * The console command name.
+      *
+      * @var string
+      */
+     protected $name = 'doctrine';
 
-	/**
-	 * The console command description.
-	 *
-	 * @var string
-	 */
-	protected $description = 'Run doctrine commmands';
+     /**
+      * The console command description.
+      *
+      * @var string
+      */
+     protected $description = 'Run doctrine commmands';
 
     /**
      * Entity Manager
@@ -42,11 +42,11 @@ class DoctrineCommand extends Command
     /** @var array */
     protected $argv;
 
-	/**
-	 * Create a new command instance.
-	 *
-	 * @return void
-	 */
+     /**
+      * Create a new command instance.
+      *
+      * @return void
+      */
     public function __construct(EntityManager $entityManager, ConsoleRunner $consoleRunner)
     {
         $this->entityManager = $entityManager;
@@ -55,16 +55,16 @@ class DoctrineCommand extends Command
         $this->argv = $_SERVER['argv'];
         array_shift($this->argv);
 
-		parent::__construct();
-	}
+          parent::__construct();
+     }
 
-	/**
-	 * Execute the console command.
-	 *
-	 * @return mixed
-	 */
-	public function fire()
-	{
+     /**
+      * Execute the console command.
+      *
+      * @return mixed
+      */
+     public function fire()
+     {
         $this->info('Executing Doctrine CLI...' . PHP_EOL);
         $helperSet = $this->consoleRunner->createHelperSet($this->entityManager);
 
@@ -75,21 +75,21 @@ class DoctrineCommand extends Command
         $cli->setHelperSet($helperSet);
         $this->consoleRunner->addCommands($cli);
         $cli->run($input);
-	}
+     }
 
-	/**
-	 * Get the console command arguments.
-	 *
-	 * @return array
-	 */
-	protected function getArguments()
-	{
-		return [
+     /**
+      * Get the console command arguments.
+      *
+      * @return array
+      */
+     protected function getArguments()
+     {
+          return [
             ['commands', InputArgument::IS_ARRAY, 'Doctrine commands']
-		];
-	}
+          ];
+     }
 
-	/**
+     /**
      * Get the console command options.
      *
      * You'll see these commands when running the following command line:
@@ -97,15 +97,15 @@ class DoctrineCommand extends Command
      * $ php vendor/bin/doctrine help <command_name>
      * or
      * $ php vendor/bin/doctrine help orm:info
-	 *
-	 * @return array
-	 */
-	protected function getOptions()
-	{
+      *
+      * @return array
+      */
+     protected function getOptions()
+     {
         $options = array_filter($this->argv, [$this, 'parseOption']);
 
         return array_map([$this, 'allowOption'], $options);
-	}
+     }
 
     /**
      * Return all options (-[-name]) found in the command line arg, example,
