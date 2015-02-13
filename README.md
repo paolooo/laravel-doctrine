@@ -1,4 +1,4 @@
-# Doctrine 2 Service for Laravel 5
+# Doctrine 2 Service for Laravel 5+
 
 Run all doctrine commands easily using `$ php artisan doctrine <command> <options>`
 
