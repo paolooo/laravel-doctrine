@@ -1,0 +1,26 @@
+{
+  "name": "paolooo/laravel-doctrine",
+  "description": "Doctrine 2 for Laravel 5 Artisans",
+  "keywords": [
+    "doctrine",
+    "laravel",
+    "orm"
+  ],
+  "license": "MIT",
+  "authors": [
+    {
+      "name": "Nino Paolo Amarillento",
+      "email": "oo70vd@gmail.com"
+    }
+  ],
+  "require": {
+    "php": ">=5.4.0",
+    "laravel/framework": "5.0.*",
+    "doctrine/orm": "~2.4"
+  },
+  "autoload": {
+    "psr-4": {
+      "Paolooo\\LaravelDoctrine\\": "src/"
+    }
+  }
+}
