@@ -16,15 +16,14 @@
   ],
   "require": {
     "php": ">=5.4.0",
-    "illuminate/support": "~5.*",
-    "illuminate/console": "~5.*",
-    "illuminate/foundation": "~4.*",
+    "illuminate/support": "5.1.*",
+    "illuminate/console": "5.1.*",
+    "illuminate/foundation": "4.0.*",
     "doctrine/orm": "~2.4"
   },
   "autoload": {
     "psr-4": {
       "Paolooo\\LaravelDoctrine\\": "src/"
     }
-  },
-  "minimum-stability": "stable"
+  }
 }
