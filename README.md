@@ -10,7 +10,7 @@ This service will grab your laravel's configuration (db and cache) and automatic
 $ composer require paolooo/laravel-doctrine
 ```
 
-Open up `app/config/app.php` configuration file, and add the following service provider code to the `$providers` array.
+Open and edit `config/app.php` configuration file, and add the following service provider code to the `$providers` array.
 
 ```
         'Paolooo\LaravelDoctrine\LaravelDoctrineServiceProvider',
