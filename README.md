@@ -32,7 +32,7 @@ $ php artisan doctrine orm:schema-tool:drop
 
 ## Local Enviroment
 
-This is a sample local envinronment (.env file) configuration.
+This is a sample local environment (.env file) configuration.
 
 ```
 APP_ENV=local
@@ -54,7 +54,7 @@ DOCTRINE_MAPPING_DIR=app/Domain/Model
 
 ## Testing Environment
 
-This is a sample testing environment configuration.
+This is a sample testing environment (phpunit.xml file) configuration.
 
 ```
 <?xml version="1.0" encoding="UTF-8"?>
