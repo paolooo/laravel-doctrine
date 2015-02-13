@@ -15,7 +15,7 @@
   ],
   "require": {
     "php": ">=5.4.0",
-    "laravel/framework": "5.0.*",
+    "laravel/framework": "5.*",
     "doctrine/orm": "~2.4"
   },
   "autoload": {
@@ -23,5 +23,5 @@
       "Paolooo\\LaravelDoctrine\\": "src/"
     }
   },
-  "minimum-stability": "dev"
+  "minimum-stability": "stable"
 }
