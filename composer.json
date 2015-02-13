@@ -1,7 +1,7 @@
 {
   "name": "paolooo/laravel-doctrine",
   "description": "Doctrine 2 for Laravel 5 Artisans",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "keywords": [
     "doctrine",
     "laravel",
@@ -16,14 +16,17 @@
   ],
   "require": {
     "php": ">=5.4.0",
-    "illuminate/support": "5.1.*",
-    "illuminate/console": "5.1.*",
-    "illuminate/foundation": "4.0.*",
+    "laravel/framework": "5.0.*",
     "doctrine/orm": "~2.4"
   },
   "autoload": {
     "psr-4": {
       "Paolooo\\LaravelDoctrine\\": "src/"
+    }
+  },
+  "extra": {
+    "branch-alias": {
+      "dev-master": "0.1.*"
     }
   },
   "minimum-stability": "dev"
