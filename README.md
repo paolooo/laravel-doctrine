@@ -7,7 +7,7 @@ This service will grab your laravel's configuration (db and cache) and automatic
 ## Installation
 
 ```bash
-$ composer require paolooo/laravel-doctrine
+$ composer require "paolooo/laravel-doctrine":"0.1.*@dev"
 ```
 
 Open and edit `config/app.php` configuration file, and add the following service provider code to the `$providers` array.

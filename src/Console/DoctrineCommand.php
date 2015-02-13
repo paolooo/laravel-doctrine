@@ -1,4 +1,4 @@
-<?php namespace Paolooo\LaravelDoctrine;
+<?php namespace Paolooo\LaravelDoctrine\Console;
 
 use Illuminate\Console\Command;
 use Doctrine\ORM\Version;

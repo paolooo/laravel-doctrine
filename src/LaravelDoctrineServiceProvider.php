@@ -56,6 +56,10 @@ class LaravelDoctrineServiceProvider extends ServiceProvider
 
             return EntityManager::create($connectionOptions, $config);
         });
+
+        $this->commands([
+            'Paolooo\LaravelDoctrine\Console\DoctrineCommand'
+        ]);
     }
 
 }
