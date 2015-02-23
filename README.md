@@ -16,8 +16,6 @@ Open and edit `config/app.php` configuration file, and add the following service
         'Paolooo\LaravelDoctrine\LaravelDoctrineServiceProvider',
 ```
 
-### DB Config
-
 Edit .env file. Add the following doctrine config. For more information,
 of doctrine configuration, see, http://doctrine-orm.readthedocs.org/en/latest/reference/advanced-configuration.html.
 
@@ -37,14 +35,14 @@ This configuration is for testing environment. Edit phpunit.xml file.
 ```
 # phpunit.xml
 
-&lt;?xml version="1.0" encoding="UTF-8"?>
-&lt;phpunit ...>
+<?xml version="1.0" encoding="UTF-8"?>
+<phpunit ...>
     ....
-    &lt;php>
+    <php>
         ...
-        &lt;env name="DB_DATABASE" value="storage/tests/db.sqlite"/>
-    &lt;/php>
-&lt;/phpunit>
+        <env name="DB_DATABASE" value="storage/tests/db.sqlite"/>
+    </php>
+</phpunit>
 ```
 
 
@@ -60,7 +58,6 @@ $ php artisan doctrine orm:schema-tool:create --dump-sql
 $ php artisan doctrine orm:schema-tool:update
 $ php artisan doctrine orm:schema-tool:drop
 ```
-
 
 ## Sample Local Enviroment Config
 
