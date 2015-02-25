@@ -194,6 +194,10 @@ class RegisterUserTest extends ModelTestCase
 {
     protected $userRepository;
 
+    protected $classes = [
+      'App\Namespace\To\UserEntity',
+    ];
+
     public function setUp()
     {
       parent::setUp();
