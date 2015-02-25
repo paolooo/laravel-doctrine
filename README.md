@@ -40,6 +40,7 @@ This configuration is for testing environment. Edit phpunit.xml file.
     ....
     <php>
         ...
+        <env name="DB_DRIVER" value="pdo_sqlite"/>
         <env name="DB_DATABASE" value="storage/tests/db.sqlite"/>
     </php>
 </phpunit>
@@ -93,9 +94,115 @@ This is a sample testing environment (phpunit.xml file) configuration.
         <env name="APP_ENV" value="testing"/>
         <env name="CACHE_DRIVER" value="array"/>
         ...
+        <env name="DB_DRIVER" value="pdo_sqlite"/>
         <env name="DB_DATABASE" value="storage/tests/db.sqlite"/>
     </php>
 </phpunit>
+```
+
+## Create a ModelTestCase for Unit Testing
+
+Simple extend your testcases to this ModelTestCase.php
+
+```
+# tests/ModelTestCase.php
+
+<?php
+
+use Doctrine\ORM\EntityManager;
+use Doctrine\ORM\Tools\SchemaTool;
+
+class ModelTestCase extends Illuminate\Foundation\Testing\TestCase
+{
+    /**
+     * @var EntityManager
+     */
+    protected $entityManager;
+
+    /**
+     * Array of \Doctrine\ORM\Mapping\ClassMetadata
+     * @var array
+     */
+    protected $metadata;
+
+    /**
+     * Creates the application.
+     *
+     * @return \Illuminate\Foundation\Application
+     */
+    public function createApplication()
+    {
+        $app = require __DIR__.'/../bootstrap/app.php';
+
+        $app->make('Illuminate\Contracts\Console\Kernel')->bootstrap();
+
+        return $app;
+    }
+
+    public function setUp()
+    {
+        parent::setUp();
+        $this->initializeDoctrine();
+    }
+
+    private function assignClassMetadata()
+    {
+        foreach($this->classes AS $class) {
+            $this->metadata[] = $this->entityManager->getClassMetadata($class);
+        }
+    }
+
+    /**
+     * Initialize Doctrine - this will create database and run schema.
+     */
+    public function initializeDoctrine()
+    {
+        $this->entityManager = App::make(EntityManager::class);
+        $this->assignClassMetadata();
+
+        $tool = new SchemaTool($this->entityManager);
+        $this->dropSchema($tool);
+        $tool->createSchema($this->metadata);
+    }
+
+    /**
+     * Drop database table.
+     *
+     * @param SchemaTool $tool
+     * @return void
+     */
+    private function dropSchema(SchemaTool $tool)
+    {
+        $tool->dropSchema($this->metadata);
+    }
+
+    public function tearDown()
+    {
+        $tool = new SchemaTool($this->entityManager);
+        $this->dropSchema($tool);
+        $this->entityManager->close();
+    }
+
+}
+
+
+# test/RegisterUserTest.php
+
+<?php
+
+class RegisterUserTest extends ModelTestCase
+{
+    protected $userRepository;
+
+    public function setUp()
+    {
+      parent::setUp();
+      $this->userRepository = App\Namespace\To\UserDoctrineORMRepository($this->EntityManager);
+    }
+
+    ...
+}
+
 ```
 
 ## TODO
