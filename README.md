@@ -73,5 +73,4 @@ Learn doctrine here http://doctrine-orm.readthedocs.org/en/latest/tutorials/gett
 
 ## TODO
 
-- Tests
 - Migration
