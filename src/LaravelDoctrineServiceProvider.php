@@ -1,7 +1,6 @@
 <?php namespace Paolooo\LaravelDoctrine;
 
 use Illuminate\Support\ServiceProvider;
-use Illuminate\Foundation\Application;
 
 use Doctrine\ORM\Tools\Setup;
 use Doctrine\ORM\EntityManager;
@@ -18,9 +17,7 @@ class LaravelDoctrineServiceProvider extends ServiceProvider
      */
     public function register()
     {
-        $this->app->singleton(EntityManager::class, function() {
-
-            $applicationMode = env('APP_ENV');
+        $this->app->singleton(EntityManager::class, function($app) {
 
             switch ( env('CACHE_DRIVER') ) {
                 case 'array':
@@ -33,7 +30,7 @@ class LaravelDoctrineServiceProvider extends ServiceProvider
 
                 default:
                     $cache  = new \Doctrine\Common\Cache\FilesystemCache(
-                        \Config::get('cache.stores.file.path')
+                        $app->make('config')->get('cache.stores.file.path')
                     );
             }
 
@@ -61,5 +58,4 @@ class LaravelDoctrineServiceProvider extends ServiceProvider
             'Paolooo\LaravelDoctrine\Console\DoctrineCommand'
         ]);
     }
-
 }

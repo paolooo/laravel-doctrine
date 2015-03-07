@@ -24,10 +24,20 @@
       "Paolooo\\LaravelDoctrine\\": "src/"
     }
   },
-  "extra": {
-    "branch-alias": {
-      "dev-master": "0.1.*-dev"
+  "autoload-dev": {
+    "psr-4": {
+        "Paolooo\\Test\\": "tests",
+        "Paolooo\\Stub\\": "stub",
+        "Paolooo\\Acme\\": "examples/Acme"
     }
   },
-  "minimum-stability": "dev"
+  "extra": {
+    "branch-alias": {
+      "dev-master": "0.2.*-dev"
+    }
+  },
+  "minimum-stability": "dev",
+  "require-dev": {
+    "mockery/mockery": "0.9.*@dev"
+  }
 }

@@ -1,4 +1,4 @@
-<?php namespace Acme\Domain;
+<?php namespace Paolooo\Acme\Domain;
 
 interface Entity
 {

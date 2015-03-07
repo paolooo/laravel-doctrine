@@ -1,6 +1,6 @@
-<?php namespace Acme\Domain\Model;
+<?php namespace Paolooo\Acme\Domain\Model;
 
-use Acme\Domain\Entity;
+use Paolooo\Acme\Domain\Entity;
 
 /**
  * @Entity
@@ -16,12 +16,12 @@ class User implements Entity
     private $id;
 
     /**
-     * @Column(type="string", length="32")
+     * @Column(type="string")
      */
     private $first_name;
 
     /**
-     * @Column(type="string", length="32")
+     * @Column(type="string")
      */
     private $last_name;
 }
