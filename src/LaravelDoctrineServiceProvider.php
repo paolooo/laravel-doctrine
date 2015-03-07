@@ -17,7 +17,7 @@ class LaravelDoctrineServiceProvider extends ServiceProvider
      */
     public function register()
     {
-        $this->app->singleton(EntityManager::class, function($app) {
+        $this->app->singleton('Doctrine\ORM\EntityManager', function($app) {
 
             switch ( env('CACHE_DRIVER') ) {
                 case 'array':

@@ -19,7 +19,7 @@ class LaravelDoctrineTest extends TestCase
             'Paolooo\LaravelDoctrine\LaravelDoctrineServiceProvider'
         );
 
-        $this->em = $this->app->make(EntityManager::class);
+        $this->em = $this->app->make('Doctrine\ORM\EntityManager');
     }
 
     public function tearDown()
