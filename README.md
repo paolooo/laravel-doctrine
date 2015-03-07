@@ -1,10 +1,10 @@
 # Doctrine 2 Service for Laravel 5+
 
-[![Build Status](https://travis-ci.org/paolooo/coffee-espresso-two-shots.svg?branch=master)](https://travis-ci.org/paolooo/coffee-espresso-two-shots)
 [![Latest Stable Version](https://poser.pugx.org/paolooo/laravel-doctrine/v/stable.svg)](https://packagist.org/packages/paolooo/laravel-doctrine)
 [![Total Downloads](https://poser.pugx.org/paolooo/laravel-doctrine/downloads.svg)](https://packagist.org/packages/paolooo/laravel-doctrine)
 [![Latest Unstable Version](https://poser.pugx.org/paolooo/laravel-doctrine/v/unstable.svg)](https://packagist.org/packages/paolooo/laravel-doctrine)
 [![License](https://poser.pugx.org/paolooo/laravel-doctrine/license.svg)](https://packagist.org/packages/paolooo/laravel-doctrine)
+[![Build Status](https://travis-ci.org/paolooo/coffee-espresso-two-shots.svg?branch=master)](https://travis-ci.org/paolooo/coffee-espresso-two-shots)
 
 Run all doctrine commands easily using `$ php artisan doctrine <command> <options>`
 

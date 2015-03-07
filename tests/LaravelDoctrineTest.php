@@ -1,5 +1,6 @@
 <?php namespace Paolooo\Test;
 
+use Mockery as m;
 use Doctrine\ORM\EntityManager;
 use Illuminate\Foundation\Application;
 use Illuminate\Foundation\Bootstrap\DetectEnvironment;
@@ -44,4 +45,5 @@ class LaravelDoctrineTest extends TestCase
 
         $this->assertCount(1, $metadata);
     }
+
 }

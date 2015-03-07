@@ -19,6 +19,8 @@ class LaravelDoctrineServiceProvider extends ServiceProvider
     {
         $this->app->singleton('Doctrine\ORM\EntityManager', function($app) {
 
+            $config = $app->make('config');
+
             switch ( env('CACHE_DRIVER') ) {
                 case 'array':
                     $cache = new \Doctrine\Common\Cache\ArrayCache;
@@ -30,9 +32,12 @@ class LaravelDoctrineServiceProvider extends ServiceProvider
 
                 default:
                     $cache  = new \Doctrine\Common\Cache\FilesystemCache(
-                        $app->make('config')->get('cache.stores.file.path')
+                        $config->get('cache.stores.file.path')
                     );
             }
+
+            $default = $config->get('database.default');
+            $database = $config->get("database.connections.{$default}");
 
             $config = new Configuration;
             $config->setMetadataCacheImpl($cache);
@@ -45,10 +50,11 @@ class LaravelDoctrineServiceProvider extends ServiceProvider
 
             // database configuration parameters
             $connectionOptions = array(
-                'driver'    => env('DB_DRIVER', 'pdo_mysql'),
-                'user'      => env('DB_USERNAME'),
-                'password'  => env('DB_PASSWORD'),
-                'dbname'    => env('DB_DATABASE'),
+                'driver'    => $database['driver'],
+                'user'      => $database['username'],
+                'password'  => $database['password'],
+                'dbname'    => $database['database'],
+                'host'      => $database['host'],
             );
 
             return EntityManager::create($connectionOptions, $config);
