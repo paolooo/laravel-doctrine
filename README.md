@@ -1,5 +1,7 @@
 # Doctrine 2 Service for Laravel 5+
 
+[![Build Status](https://travis-ci.org/paolooo/coffee-espresso-two-shots.svg?branch=master)](https://travis-ci.org/paolooo/coffee-espresso-two-shots)
+
 Run all doctrine commands easily using `$ php artisan doctrine <command> <options>`
 
 This service will grab your laravel's configuration (db and cache) and automatically apply it to doctrine2 configurate, no more hassle configuration needed. :)
