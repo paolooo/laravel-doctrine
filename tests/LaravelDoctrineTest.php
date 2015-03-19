@@ -37,6 +37,20 @@ class LaravelDoctrineTest extends TestCase
     }
 
     /** @test */
+    public function should_instantiate_entity_manager_by_on_method()
+    {
+        $this->assertInstanceOf('Doctrine\ORM\EntityManager', $this->em->on());
+    }
+
+    /** @test */
+    public function should_be_able_to_select_second_connection()
+    {
+        $this->assertInstanceOf('Doctrine\ORM\EntityManager', $this->em->on(
+            'read'
+        ));
+    }
+
+    /** @test */
     public function should_return_metadata()
     {
         $metadata = $this->em
@@ -45,5 +59,4 @@ class LaravelDoctrineTest extends TestCase
 
         $this->assertCount(1, $metadata);
     }
-
 }

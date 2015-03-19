@@ -1,7 +1,7 @@
 {
   "name": "paolooo/laravel-doctrine",
   "description": "Doctrine 2 for Laravel 5 Artisans",
-  "version": "0.1.1",
+  "version": "0.3.1",
   "keywords": [
     "doctrine",
     "laravel",
@@ -17,7 +17,9 @@
   "require": {
     "php": ">=5.4.0",
     "laravel/framework": "5.0.*",
-    "doctrine/orm": "~2.4"
+    "doctrine/orm": "~2.4",
+    "php-daddy/contracts": "*",
+    "php-daddy/contract-singleton": "*"
   },
   "autoload": {
     "psr-4": {
@@ -33,7 +35,7 @@
   },
   "extra": {
     "branch-alias": {
-      "dev-master": "0.2.*-dev"
+      "dev-master": "0.3.*-dev"
     }
   },
   "minimum-stability": "dev",

@@ -12,11 +12,15 @@ class ConfigStub
 
             case 'database.connections.mysql':
                 $config = [
+                    'read' => [
+                        'database' => env('READ_DB_DATABASE', 'forge_read')
+                    ],
                     'driver' => env('DB_DRIVER', 'pdo_mysql'),
                     'username' => env('DB_USERNAME', 'root'),
                     'password' => env('DB_PASSWORD', ''),
                     'database' => env('DB_DATABASE', 'forge'),
-                    'host' => env('DB_HOST', 'localhost'), ];
+                    'host' => env('DB_HOST', 'localhost'),
+                ];
                 break;
 
             case 'database.connections':
