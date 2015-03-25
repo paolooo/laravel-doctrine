@@ -1,8 +1,8 @@
 <?php namespace Paolooo\LaravelDoctrine;
 
-use Doctrine\ORM\EntityManager as DoctrineEntityManager;
+use Doctrine\ORM\EntityManager;
 
-class ProxyEntityManager extends DoctrineEntityManager implements EntityManager
+class ProxyEntityManager extends EntityManager implements LaravelDoctrineEntityManager
 {
     protected $factory;
 
@@ -10,12 +10,12 @@ class ProxyEntityManager extends DoctrineEntityManager implements EntityManager
     {
         $this->factory = EntityManagerFactory::getInstance();
 
-        $conn = $this->factory->getConnection('default');
+        $dbalConnection = $this->factory->getConnection('default');
 
         parent::__construct(
-            $conn,
+            $dbalConnection,
             $this->factory->getConfiguration(),
-            $conn->getEventManager()
+            $dbalConnection->getEventManager()
         );
     }
 

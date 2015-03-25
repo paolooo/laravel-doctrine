@@ -1,62 +1,94 @@
-<?php namespace Paolooo\Tests;
+<?php namespace Paolooo\Test;
 
 use Mockery as m;
+use Symfony\Component\Console\Tester\CommandTester;
+use Symfony\Component\Console\Application;
 use Paolooo\LaravelDoctrine\Console\DoctrineCommand;
+use Paolooo\LaravelDoctrine\Console\DoctrineCommandBuilder;
 
-class DoctrineCommandTest extends \PHPUnit_Framework_TestCase
+
+class DoctrineCommandTest extends TestCase
 {
-    protected $em;
-    protected $runner;
-    protected $doctrineCommandFactory;
+    protected $tester;
 
     public function setUp()
     {
-        $this->em = m::mock('Doctrine\ORM\EntityManager');
+        parent::setUp();
 
-        $this->runner = m::mock(
-                'Doctrine\ORM\Tools\Console\ConsoleRunner[createHelperSet]'
-            )
-            ->shouldReceive('createHelperSet')
-            ->andReturn(
-                m::mock('Symfony\Component\Console\Helper\HelperSet')->makePartial()
-            )
-            ->getMock();
-
-        $this->doctrineCommandFactory = m::mock(
-                'Paolooo\LaravelDoctrine\Console\DoctrineCommandFactory',
-                [$this->em, $this->runner]
-            )
-            ->makePartial();
-    }
-
-    public function tearDown()
-    {
-        m::close();
-    }
-
-    /** @test */
-    public function should_be_able_to_instantiate()
-    {
-        $command = new DoctrineCommand($this->doctrineCommandFactory);
-
-        $this->assertNotEmpty($command);
-        $this->assertInstanceOf(
-            'Paolooo\LaravelDoctrine\Console\DoctrineCommand',
-            $command
+        $this->initCommand(
+            new DoctrineCommand(new DoctrineCommandBuilder)
         );
     }
 
-    // /** @test */
-    // public function should_fire()
-    // {
-    //     $command = m::mock(
-    //             'Paolooo\LaravelDoctrine\Console\DoctrineCommand[info]',
-    //             [$this->doctrineCommandFactory]
-    //         )
-    //         ->shouldReceive('info')
-    //         ->with(m::type('string'))
-    //         ->getMock();
-    //
-    //     $command->fire();
-    // }
+    public function initCommand($command)
+    {
+        $command->getConsole()->setAutoExit(false);
+
+        $application = new Application;
+        $application->add($command);
+
+        $command->setApplication($application);
+        $command->setLaravel($this->app);
+
+        $this->tester = new CommandTester($command);
+    }
+
+    /**
+     * Execute command tester
+     *
+     * @param array $arguments
+     * @param array $options
+     * @return void
+     */
+    public function execute(array $arguments, array $options = [])
+    {
+        $this->tester->execute([
+            'commands' => array_merge(
+                ['doctrine'],
+                $arguments
+            ),
+            $options
+        ]);
+    }
+
+
+    public function tearDown()
+    {
+        parent::tearDown();
+        $this->tester = null;
+    }
+
+    /** @test */
+    public function should_execute_doctrine_command()
+    {
+        $this->execute([]);
+        $this->assertContains('Doctrine Command Line Interface', $this->tester->getDisplay());
+    }
+
+    /** @test */
+    public function should_display_help_for_orminfo_argument()
+    {
+        $this->execute(['help', 'orm:info']);
+        $this->assertContains("Usage:\n orm:info", $this->tester->getDisplay());
+    }
+
+    /** @test */
+    public function should_accept_options()
+    {
+        $this->execute(['orm:schema-tool:create', '--dump-sql']);
+        $this->assertContains("CREATE TABLE", $this->tester->getDisplay());
+    }
+
+    /** @test */
+    public function should_accept_em_option()
+    {
+        $this->execute([
+            'orm:schema-tool:create',
+            '--dump-sql',
+            '--em=read',
+        ]) ;
+
+        $this->assertContains("CREATE TABLE", $this->tester->getDisplay());
+    }
+
 }

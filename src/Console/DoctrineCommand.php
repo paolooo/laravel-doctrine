@@ -4,6 +4,14 @@ use Illuminate\Console\Command;
 use Symfony\Component\Console\Input\ArgvInput;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Input\InputArgument;
+use Symfony\Component\Console\Output\NullOutput;
+
+use Symfony\Component\Console\Input\InputDefinition;
+use Symfony\Component\Console\Input\InputInterface;
+use Symfony\Component\Console\Input\ArrayInput;
+use Symfony\Component\Console\Input\StringInput;
+use Symfony\Component\Console\Output\OutputInterface;
+use Symfony\Component\Console\Tester\CommandTester;
 
 class DoctrineCommand extends Command
 {
@@ -22,9 +30,9 @@ class DoctrineCommand extends Command
     protected $description = 'Run doctrine commmands';
 
     /**
-     * @var Paolooo\LaravelDoctrine\Console\DoctrineCommandFactory
+     * @var DoctrineCommandBuilder
      */
-    protected $doctrineCommandFactory;
+    protected $builder;
 
     /**
      * @var array
@@ -36,19 +44,33 @@ class DoctrineCommand extends Command
      *
      * @return void
      */
-    public function __construct(DoctrineCommandFactory $factory)
+    public function __construct(DoctrineCommandBuilder $builder)
     {
-        $this->sanitizeCommandLineInput();
+        $this->setAndSanitizeInput($_SERVER['argv']);
 
-        $this->doctrineCommandFactory = $factory;
-        $this->doctrineCommandFactory->setInput(new ArgvInput($this->argv));
+        $this->build($builder);
 
         parent::__construct();
     }
 
-    public function sanitizeCommandLineInput()
+    public function build($builder)
     {
-        $this->argv = $_SERVER['argv'];
+        $this->builder = $builder;
+        $this->builder->setEntityManager('read');
+        $this->builder->buildEntityManager();
+        $this->builder->buildConsole();
+
+        $this->builder->getConsole();
+    }
+
+    /**
+     * @param $input array $_SERVER['argv']
+     *
+     * @return void
+     */
+    public function setAndSanitizeInput($input)
+    {
+        $this->argv = $input;
 
         array_shift($this->argv);
     }
@@ -62,11 +84,37 @@ class DoctrineCommand extends Command
     {
         $this->info('Executing Doctrine CLI...' . PHP_EOL);
 
-        $input = $this->doctrineCommandFactory->getInput();
+        $input = $this->input->getArgument('commands');
 
-        $exitCode = $this->doctrineCommandFactory
-            ->createConsole()
-            ->run($input);
+        $em = null;
+        $input = array_filter($input, function($v) use (&$em) {
+            if (strpos($v, '--em') !== false) {
+                $em = $v;
+                return false;
+            }
+            return true;
+        });
+
+        if (!empty($em)) {
+            list($tmp, $conn) = explode('=', $em);
+        }
+
+        $input = new ArgvInput($input);
+        $input->bind($this->getDefinition());
+
+        if (!empty($conn)) {
+            $this->builder->setEntityManager('read');
+            $this->builder->buildEntityManager();
+
+            $helperSet = $this->builder->getHelperSet();
+
+            $cli = $this->getConsole();
+            $cli->setHelperSet($helperSet);
+        } else {
+            $cli = $this->getConsole();
+        }
+
+        $cli->run($input, $this->getOutput());
     }
 
     /**
@@ -81,7 +129,7 @@ class DoctrineCommand extends Command
         ];
     }
 
-    /**
+    /**]]
      * Get the console command options.
      *
      * You'll see these commands when running the following command line:
@@ -94,9 +142,16 @@ class DoctrineCommand extends Command
      */
     protected function getOptions()
     {
-        $options = array_filter($this->argv, [$this, 'parseOption']);
+        $options = array_filter(
+            array_map([$this, 'parseOption'], $this->argv),
+            'strlen'
+        );
+        $options = array_map([$this, 'allowOption'], $options);
 
-        return array_map([$this, 'allowOption'], $options);
+        $options[] = $this->allowOption('dump-sql');
+        $options[] = $this->allowOption('em');
+
+        return $options;
     }
 
     /**
@@ -108,11 +163,19 @@ class DoctrineCommand extends Command
      */
     private function parseOption($token)
     {
-        if (strpos($token, '--') !== false && $token !== '--') {
-            return substr($token, 2);
-        } elseif (strpos($token, '-') !== false && $token !== '-') {
-            return substr($token, 1);
+        $option = null;
+
+        if (strpos($token, '--') === 0 && $token !== '--') {
+            $option = substr($token, 2);
+        } elseif (strpos($token, '-') === 0 && $token !== '-') {
+            $option = substr($token, 1);
         }
+
+        if (($n = strpos($option, '=')) !== false) {
+            $option = substr($option, 0, $n);
+        }
+
+        return $option;
     }
 
     /**
@@ -124,6 +187,16 @@ class DoctrineCommand extends Command
     private function allowOption($option)
     {
         return [$option, null, InputOption::VALUE_OPTIONAL | InputOption::VALUE_IS_ARRAY, null, null];
+    }
+
+    /**
+     * Get console Application
+     *
+     * @return Symfony\Component\Console\Application
+     */
+    public function getConsole()
+    {
+        return $this->builder->getConsole();
     }
 
 }

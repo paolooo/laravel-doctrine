@@ -10,6 +10,9 @@ Run all doctrine commands easily using `$ php artisan doctrine <command> <option
 
 This service will grab your laravel's configuration (db and cache) and automatically apply it to doctrine2 configurate, no more hassle configuration needed. :)
 
+* Supports all Doctrine's command line.
+* Supports multiple DB connection.
+
 ## Installation
 
 ```bash
@@ -59,6 +62,26 @@ This configuration is for testing environment. Edit phpunit.xml file.
 </phpunit>
 ```
 
+## Usage
+
+```
+<?php
+
+# Create new EntityManager
+$em = \App::make('Doctrine\ORM\EntityManager');
+
+# Saving user entity to a 'default' database connection
+# you can use `$em->on('default')` as well.
+$em->getRepository('Paolooo\Acme\Domain\Entity\User')->persist($user);
+$em->flush();
+
+# Saving user entity to a 'read' database
+$em->on('read')
+    ->getRepository('Paolooo\Acme\Domain\Entity\User')
+    ->persist($user);
+$em->on('read')->flush();
+
+```
 
 ## Running Doctrine Commands
 
@@ -82,7 +105,6 @@ See `examples/` directory.
 * Sample `ModelTestCase`. This will get the setup doctrine for you. Sets `$this->entityManager`. Create and drop schema as well.
 
 Learn doctrine here http://doctrine-orm.readthedocs.org/en/latest/tutorials/getting-started.html
-
 
 ## TODO
 

@@ -1,6 +1,6 @@
 <?php namespace Paolooo\LaravelDoctrine;
 
-interface EntityManager
+interface LaravelDoctrineEntityManager
 {
     /**
      * @param string $connection Connection to be used
