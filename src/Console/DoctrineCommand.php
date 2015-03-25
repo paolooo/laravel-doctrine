@@ -85,6 +85,7 @@ class DoctrineCommand extends Command
         $this->info('Executing Doctrine CLI...' . PHP_EOL);
 
         $input = $this->input->getArgument('commands');
+        array_unshift($input, 'doctrine');
 
         $em = null;
         $input = array_filter($input, function($v) use (&$em) {
@@ -95,15 +96,13 @@ class DoctrineCommand extends Command
             return true;
         });
 
-        if (!empty($em)) {
-            list($tmp, $conn) = explode('=', $em);
-        }
-
         $input = new ArgvInput($input);
         $input->bind($this->getDefinition());
 
-        if (!empty($conn)) {
-            $this->builder->setEntityManager('read');
+        if (!empty($em)) {
+            list($tmp, $conn) = preg_split('/=|\s/', $em);
+
+            $this->builder->setEntityManager($conn);
             $this->builder->buildEntityManager();
 
             $helperSet = $this->builder->getHelperSet();

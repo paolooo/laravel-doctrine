@@ -43,10 +43,8 @@ class DoctrineCommandTest extends TestCase
     public function execute(array $arguments, array $options = [])
     {
         $this->tester->execute([
-            'commands' => array_merge(
-                ['doctrine'],
-                $arguments
-            ),
+            'command' => 'doctrine',
+            'commands' => $arguments,
             $options
         ]);
     }
@@ -85,10 +83,11 @@ class DoctrineCommandTest extends TestCase
         $this->execute([
             'orm:schema-tool:create',
             '--dump-sql',
-            '--em=read',
+            '--em read',
         ]) ;
 
         $this->assertContains("CREATE TABLE", $this->tester->getDisplay());
     }
+
 
 }
