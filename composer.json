@@ -1,7 +1,7 @@
 {
   "name": "paolooo/laravel-doctrine",
   "description": "Doctrine 2 for Laravel 5 Artisans",
-  "version": "0.3.1",
+  "version": "0.3.2",
   "keywords": [
     "doctrine",
     "laravel",
