@@ -55,12 +55,11 @@ class DoctrineCommand extends Command
 
     public function build($builder)
     {
-        $this->builder = $builder;
-        $this->builder->setEntityManager('read');
-        $this->builder->buildEntityManager();
-        $this->builder->buildConsole();
+        $builder->setEntityManager();
+        $builder->buildEntityManager();
+        $builder->buildConsole();
 
-        $this->builder->getConsole();
+        $this->builder = $builder;
     }
 
     /**

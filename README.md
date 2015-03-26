@@ -83,6 +83,18 @@ $em->on('read')->flush();
 
 ```
 
+#### Multiple Connection
+
+```bash
+$em = \App::make('Doctrine\ORM\EntityManager');
+...
+$em->on('read')->persist($user);
+$em->on('read')->flush();
+
+$em->on('eventStore')->persist($user);
+$em->on('eventStore')->flush();
+```
+
 ## Running Doctrine Commands
 
 Sample artisan for doctrine.
