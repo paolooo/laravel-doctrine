@@ -15,6 +15,16 @@ use Symfony\Component\Console\Tester\CommandTester;
 
 class DoctrineCommand extends Command
 {
+    private static $ignore_options = [
+        'help',
+        'verbose',
+        'version',
+        'ansi',
+        'no-ansi',
+        'no-interaction',
+        'env',
+    ];
+
     /**
      * The console command name.
      *
@@ -171,6 +181,10 @@ class DoctrineCommand extends Command
 
         if (($n = strpos($option, '=')) !== false) {
             $option = substr($option, 0, $n);
+        }
+
+        if (in_array($option, self::$ignore_options)) {
+            return null;
         }
 
         return $option;
