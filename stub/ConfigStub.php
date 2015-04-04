@@ -17,7 +17,7 @@ class ConfigStub
             case 'database.connections.mysql':
                 $config = [
                     'read' => [
-                        'database' => env('READ_DB_DATABASE', 'forge_read'),
+                        'database' => env('READ_DB_DATABASE', 'cqrs_read_db'),
                         'username' => 'paolo'
                     ],
                     'driver' => 'pdo_sqlite',
