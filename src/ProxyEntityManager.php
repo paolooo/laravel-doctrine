@@ -4,26 +4,26 @@ use Doctrine\ORM\EntityManager;
 
 class ProxyEntityManager extends EntityManager implements LaravelDoctrineEntityManager
 {
-    protected $factory;
+    protected $provider;
 
-    public function __construct()
+    public function __construct(EntityManagerProvider $provider)
     {
-        $this->factory = EntityManagerFactory::getInstance();
+        $this->provider = $provider;
 
-        $dbalConnection = $this->factory->getConnection('default');
+        $connection = $provider->getDriver()->connection();
+        $eventManager = $connection->getEventManager();
+        $config = $provider->getConfiguration()->config();
 
-        parent::__construct(
-            $dbalConnection,
-            $this->factory->getConfiguration(),
-            $dbalConnection->getEventManager()
-        );
+        parent::__construct($connection, $config, $eventManager);
     }
 
     /**
      * {@inheritdoc}
      */
-    public function on($key='')
+    public function on($key=null)
     {
-        return $this->factory->make($key);
+        $key = (empty($key)) ? 'default' : $key;
+
+        return $this->provider->create($key);
     }
 }

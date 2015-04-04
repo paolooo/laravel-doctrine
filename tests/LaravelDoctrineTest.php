@@ -39,15 +39,23 @@ class LaravelDoctrineTest extends TestCase
     /** @test */
     public function should_instantiate_entity_manager_by_on_method()
     {
-        $this->assertInstanceOf('Doctrine\ORM\EntityManager', $this->em->on());
+        $em = $this->em->on();
+        $this->assertInstanceOf('Doctrine\ORM\EntityManager', $em);
     }
 
     /** @test */
     public function should_be_able_to_select_second_connection()
     {
-        $this->assertInstanceOf('Doctrine\ORM\EntityManager', $this->em->on(
-            'read'
-        ));
+        $emRead = $this->em->on('read');
+
+        $this->assertInstanceOf('Doctrine\ORM\EntityManager', $emRead);
+
+        $params = config('database.connections.mysql');
+
+        $connParams = $emRead->getConnection()->getParams();
+
+        $this->assertTrue(in_array($params['read']['database'], $connParams));
+        $this->assertTrue(in_array($params['read']['username'], $connParams));
     }
 
     /** @test */

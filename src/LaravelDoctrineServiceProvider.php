@@ -2,15 +2,20 @@
 
 use Illuminate\Support\ServiceProvider;
 
-use Doctrine\ORM\Tools\Setup;
-use Doctrine\ORM\EntityManager;
-use Doctrine\ORM\Configuration;
-use Doctrine\Common\Cache\ArrayCache;
-use Doctrine\Common\Cache\ApcCache;
-use Doctrine\DBAL\DriverManager;
-
 class LaravelDoctrineServiceProvider extends ServiceProvider
 {
+    /**
+     * Bootstrap the event Application
+     *
+     * @return void
+     */
+    public function boot()
+    {
+        $this->publishes([
+            __DIR__ . '/../config/doctrine.php' => config_path('doctrine.php')
+        ]);
+    }
+
     /**
      * Register the service provider.
      *
@@ -25,7 +30,28 @@ class LaravelDoctrineServiceProvider extends ServiceProvider
          * @return EntityManager
          */
         $this->app->singleton('Doctrine\ORM\EntityManager', function() {
-            return new ProxyEntityManager;
+
+            // Cache
+            $cacheType = config('cache.default');
+            $path = config("cache.stores.{$cacheType}.path");
+            $cache = CacheFactory::make($cacheType, $path);
+
+            // DB Driver
+            $dbType = config('database.default');
+            $dbParams = config("database.connections.{$dbType}");
+
+            $driver = new DriverManagerProvider($dbParams);
+
+            // Doctrin Params
+            $params = config('doctrine');
+
+            $configuration = new ConfigurationProvider($cache, $params);
+
+            $provider = EntityManagerProvider::getInstance();
+            $provider->driver($driver);
+            $provider->configuration($configuration);
+
+            return new ProxyEntityManager($provider);
         });
 
         $this->commands([

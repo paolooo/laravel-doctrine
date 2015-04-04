@@ -40,36 +40,39 @@ class DoctrineCommand extends Command
     protected $description = 'Run doctrine commmands';
 
     /**
-     * @var DoctrineCommandBuilder
-     */
-    protected $builder;
-
-    /**
      * @var array
      */
     protected $argv;
+
+    /**
+     * @var DoctrineCommandProvider
+     */
+    protected $commandProvider;
+
+    /**
+     * @var boolean
+     */
+    private $autoExit;
+
+    /**
+     * Entity Manager Key
+     * @var string
+     */
+    private $key;
 
     /**
      * Create a new command instance.
      *
      * @return void
      */
-    public function __construct(DoctrineCommandBuilder $builder)
+    public function __construct(DoctrineCommandProvider $provider)
     {
         $this->setAndSanitizeInput($_SERVER['argv']);
+        $this->autoExit(true);
 
-        $this->build($builder);
+        $this->commandProvider = $provider;
 
         parent::__construct();
-    }
-
-    public function build($builder)
-    {
-        $builder->setEntityManager();
-        $builder->buildEntityManager();
-        $builder->buildConsole();
-
-        $this->builder = $builder;
     }
 
     /**
@@ -85,6 +88,14 @@ class DoctrineCommand extends Command
     }
 
     /**
+     * @param boolean $isExit
+     */
+    public function autoExit($isExit)
+    {
+        $this->autoExit = $isExit;
+    }
+
+    /**
      * Execute the console command.
      *
      * @return mixed
@@ -94,8 +105,39 @@ class DoctrineCommand extends Command
         $this->info('Executing Doctrine CLI...' . PHP_EOL);
 
         $input = $this->input->getArgument('commands');
+
+        $this->setInputArgs($input);
+
+        $this->getConsole($this->key)->run(
+            $input, $this->getOutput()
+        );
+    }
+
+    /**
+     * Filter and set input for doctrine command line
+     *
+     * @param array $input
+     */
+    public function setInputArgs(&$input)
+    {
         array_unshift($input, 'doctrine');
 
+        $this->key = $this->getEntityManagerKey($input);
+
+        $input = new ArgvInput($input);
+        $input->bind($this->getDefinition());
+
+        return $input;
+    }
+
+    /**
+     * Get key entity manager
+     *
+     * @param array $input Command line input
+     * @return string
+     */
+    public function getEntityManagerKey(&$input)
+    {
         $em = null;
         $input = array_filter($input, function($v) use (&$em) {
             if (strpos($v, '--em') !== false) {
@@ -105,24 +147,31 @@ class DoctrineCommand extends Command
             return true;
         });
 
-        $input = new ArgvInput($input);
-        $input->bind($this->getDefinition());
-
+        $key = null;
         if (!empty($em)) {
-            list($tmp, $conn) = preg_split('/=|\s/', $em);
-
-            $this->builder->setEntityManager($conn);
-            $this->builder->buildEntityManager();
-
-            $helperSet = $this->builder->getHelperSet();
-
-            $cli = $this->getConsole();
-            $cli->setHelperSet($helperSet);
-        } else {
-            $cli = $this->getConsole();
+            list($tmp, $key) = preg_split('/=|\s/', $em);
         }
 
-        $cli->run($input, $this->getOutput());
+        return $key;
+    }
+
+    /**
+     * Build console new console app if key exists
+     *
+     * @param string $key
+     *
+     * @return Symfony\Component\Console\Application
+     */
+    public function getConsole($key)
+    {
+        if (!empty($key)) {
+            $this->commandProvider->buildConsole($key);
+        }
+
+        $cli = $this->commandProvider->console();
+        $cli->setAutoExit($this->autoExit);
+
+        return $cli;
     }
 
     /**
@@ -200,15 +249,4 @@ class DoctrineCommand extends Command
     {
         return [$option, null, InputOption::VALUE_OPTIONAL | InputOption::VALUE_IS_ARRAY, null, null];
     }
-
-    /**
-     * Get console Application
-     *
-     * @return Symfony\Component\Console\Application
-     */
-    public function getConsole()
-    {
-        return $this->builder->getConsole();
-    }
-
 }
