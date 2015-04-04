@@ -54,8 +54,6 @@ class LaravelDoctrineTest extends TestCase
 
         $connParams = $emRead->getConnection()->getParams();
 
-        dd($params, $connParams);
-
         $this->assertTrue(in_array($params['read']['database'], $connParams));
         $this->assertTrue(in_array($params['read']['username'], $connParams));
     }
