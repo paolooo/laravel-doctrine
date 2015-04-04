@@ -89,5 +89,4 @@ class EntityManagerProvider
     {
         return $this->configuration;
     }
-
 }
