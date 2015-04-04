@@ -22,7 +22,10 @@ class DriverManagerProviderTest extends \PHPUnit_Framework_TestCase
     {
         $driver = new DriverManagerProvider([]);
 
-        $this->assertInstanceOf(DriverManagerInterface::class, $driver);
+        $this->assertInstanceOf(
+            'Paolooo\LaravelDoctrine\DriverManagerInterface',
+            $driver
+        );
     }
 
     /**

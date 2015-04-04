@@ -80,7 +80,7 @@ class EntityManagerProviderTest extends \PHPUnit_Framework_TestCase
         $provider->configuration($configuration);
         $em = $provider->create();
 
-        $this->assertInstanceOf(EntityManager::class, $em);
+        $this->assertInstanceOf('Doctrine\ORM\EntityManager', $em);
     }
 
     /**
@@ -98,7 +98,7 @@ class EntityManagerProviderTest extends \PHPUnit_Framework_TestCase
         $provider->configuration($configuration);
         $em = $provider->create('read');
 
-        $this->assertInstanceOf(EntityManager::class, $em);
+        $this->assertInstanceOf('Doctrine\ORM\EntityManager', $em);
         $this->assertTrue(in_array(
             $dbParams['read']['database'],
             $em->getConnection()->getParams()
