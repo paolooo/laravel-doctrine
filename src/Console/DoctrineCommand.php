@@ -99,15 +99,38 @@ class DoctrineCommand extends Command
         $input = $this->input->getArgument('commands');
         $options = $this->input->getOptions();
 
-        $em = $options['em'];
-        unset($options['em']);
+        $em = $this->getEntityManagerKey($options);
 
         $input = $this->setInputArgs($input, $options);
 
-        $this->getConsole($this->key)->run(
+        $this->getConsole($em)->run(
             $input, $this->getOutput()
         );
     }
+
+    /**
+     * Get and remove entitymanager string on options var
+     *
+     * @param array $options
+     * @return string
+     */
+    protected function getEntityManagerKey(&$options)
+    {
+        unset($options['em']);
+
+        $em = $this->input->getOption('em');
+
+        if (isset($em[0]) && empty($em[0])) {
+            return null;
+        }
+
+        if (isset($em[0])) {
+            return $em[0];
+        }
+
+    }
+
+
 
     /**
      * Filter and set input for doctrine command line
