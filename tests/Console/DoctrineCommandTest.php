@@ -50,40 +50,42 @@ class DoctrineCommandTest extends CommandTestCase
      */
     public function should_transform_option($command)
     {
-        $options = [
-            'dump-sql' => '',
-            'em' => 'read',
-        ];
+        $this->registerCommand($command);
 
-        $transOption = $command->transOption($options);
+        $this->execute(['orm:info'], [
+            '--dump-sql' => [null]
+        ]);
+
+        $transOption = $command->transOption([
+            'dump-sql' => [null]
+        ]);
 
         $this->assertContains('--dump-sql', $transOption);
-        $this->assertContains('--em=read', $transOption);
     }
 
-    // /**
-    //  * @depends should_instantiate
-    //  * @test
-    //  */
-    // public function should_execute_doctrine_command($command)
-    // {
-    //     $this->registerCommand($command);
-    //
-    //     $this->execute([]);
-    //     $this->assertContains('Doctrine Command Line Interface', $this->tester->getDisplay());
-    // }
+    /**
+     * @depends should_instantiate
+     * @test
+     */
+    public function should_execute_doctrine_command($command)
+    {
+        $this->registerCommand($command);
 
-    // /**
-    //  * @depends should_instantiate
-    //  * @test
-    //  */
-    // public function should_display_help_for_orminfo_argument($command)
-    // {
-    //     $this->registerCommand($command);
-    //
-    //     $this->execute(['help', 'orm:info']);
-    //     $this->assertContains("Usage:\n orm:info", $this->tester->getDisplay());
-    // }
+        $this->execute([]);
+        $this->assertContains('Doctrine Command Line Interface', $this->tester->getDisplay());
+    }
+
+    /**
+     * @depends should_instantiate
+     * @test
+     */
+    public function should_display_help_for_orminfo_argument($command)
+    {
+        $this->registerCommand($command);
+
+        $this->execute(['help', 'orm:info']);
+        $this->assertContains("Usage:\n orm:info", $this->tester->getDisplay());
+    }
 
     /**
      * @depends should_instantiate
@@ -97,7 +99,7 @@ class DoctrineCommandTest extends CommandTestCase
                 'orm:schema-tool:create',
             ],
             [
-                '--dump-sql' => '',
+                '--dump-sql' => [null],
                 '--em' => 'read',
         ]);
 
@@ -117,7 +119,7 @@ class DoctrineCommandTest extends CommandTestCase
                 'orm:schema-tool:create',
             ],
             [
-                '--dump-sql',
+                '--dump-sql' => [null],
                 '--em read',
             ]
         );

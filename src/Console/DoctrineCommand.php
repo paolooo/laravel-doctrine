@@ -123,7 +123,6 @@ class DoctrineCommand extends Command
 
         array_unshift($inputAndOptions, 'doctrine');
 
-
         $argvInput = new ArgvInput($inputAndOptions);
         $argvInput->bind($this->getDefinition());
 
@@ -151,6 +150,7 @@ class DoctrineCommand extends Command
 
     /**
      * @param array $options
+     * @param Input $input
      * @return array
      */
     public function transOption($options)
@@ -158,12 +158,29 @@ class DoctrineCommand extends Command
         $a = [];
 
         array_walk($options, function($v, $k) use (&$a){
-            $a[] = !empty($v) ? "--$k=$v" : "--$k";
+
+            $opt = $this->input->getOption($k);
+
+            if (!sizeof($opt)) {
+                return;
+            }
+
+            if ($v === true) {
+                return $a[] = "--{$k}";
+            }
+
+            if (is_array($v) && empty($v[0])) {
+                return $a[] = "--{$k}";
+            }
+
+
+            if (is_array($v) && !empty($v[0])) {
+                return $a[] = "--{$k}={$v[0]}";
+            }
         });
 
         return $a;
     }
-
 
     /**
      * Build console new console app if key exists
