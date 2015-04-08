@@ -5,6 +5,13 @@ use Illuminate\Support\ServiceProvider;
 class LaravelDoctrineServiceProvider extends ServiceProvider
 {
     /**
+     * Indicates if loading of the provider is deferred.
+     *
+     * @val bool
+     */
+    protected $defer = true;
+
+    /**
      * Bootstrap the event Application
      *
      * @return void
@@ -29,7 +36,20 @@ class LaravelDoctrineServiceProvider extends ServiceProvider
          *
          * @return EntityManager
          */
-        $this->app->singleton('Doctrine\ORM\EntityManager', function() {
+        $this->app->singleton('Doctrine\ORM\EntityManager', function($app) {
+
+            $provider = $app->make('Paolooo\LaravelDoctrine\EntityManagerProvider');
+
+            return new ProxyEntityManager($provider);
+        });
+
+
+        /**
+         * Provides a config for EntityManager
+         *
+         * @return EntityManagerProvider
+         */
+        $this->app->singleton('Paolooo\LaravelDoctrine\EntityManagerProvider', function() {
 
             // Cache
             $cacheType = config('cache.default');
@@ -51,12 +71,25 @@ class LaravelDoctrineServiceProvider extends ServiceProvider
             $provider->driver($driver);
             $provider->configuration($configuration);
 
-            return new ProxyEntityManager($provider);
+            return $provider;
         });
 
         $this->commands([
             'Paolooo\LaravelDoctrine\Console\DoctrineCommand'
         ]);
+    }
+
+    /**
+     * Get the services provided by the provider.
+     *
+     * @return array
+     */
+    public function provides()
+    {
+        return [
+            'Doctrine\ORM\EntityManager',
+            'Paolooo\LaravelDoctrine\EntityManagerProvider'
+        ];
     }
 
 }

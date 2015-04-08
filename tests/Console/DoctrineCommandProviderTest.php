@@ -46,5 +46,8 @@ class DoctrineCommandProviderTest extends CommandTestCase
             'Symfony\Component\Console\Application',
             $console
         );
+
+        return $console;
     }
+
 }

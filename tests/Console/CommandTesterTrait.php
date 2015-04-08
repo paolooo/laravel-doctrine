@@ -39,10 +39,13 @@ trait CommandTesterTrait
      */
     public function execute(array $arguments, array $options = [])
     {
-        $this->tester->execute([
+        $cmd = [
             'command' => 'doctrine',
             'commands' => $arguments,
-            $options
-        ]);
+        ];
+
+        $cmdArgs = array_merge($cmd, $options);
+
+        $this->tester->execute($cmdArgs);
     }
 }
