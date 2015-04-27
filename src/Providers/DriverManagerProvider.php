@@ -38,9 +38,15 @@ class DriverManagerProvider implements DriverManagerInterface
         $dbConfig = array_get($this->dbParams, $key) ?: [];
         $params = array_merge($this->dbParams, $dbConfig);
 
-        return array_merge($params, [
-            'dbname'    => $params['database'],
-            'user'      => $params['username']
-        ]);
+        $sqlite_params = array('path' => $params['database']);
+
+        return array_merge(
+            $sqlite_params,
+            $params,
+            [
+                'dbname'    => $params['database'],
+                'user'      => $params['username']
+            ]
+        );
     }
 }
