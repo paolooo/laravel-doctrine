@@ -1,6 +1,8 @@
 <?php namespace Paolooo\LaravelDoctrine;
 
 use Doctrine\ORM\EntityManager;
+use Paolooo\LaravelDoctrine\Contracts\LaravelDoctrineEntityManager;
+use Paolooo\LaravelDoctrine\Providers\EntityManagerProvider;
 
 class ProxyEntityManager extends EntityManager implements LaravelDoctrineEntityManager
 {

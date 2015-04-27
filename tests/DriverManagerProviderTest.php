@@ -1,7 +1,7 @@
 <?php namespace Paolooo\Test;
 
-use Paolooo\LaravelDoctrine\DriverManagerInterface;
-use Paolooo\LaravelDoctrine\DriverManagerProvider;
+use Paolooo\LaravelDoctrine\Contracts\DriverManagerInterface;
+use Paolooo\LaravelDoctrine\Providers\DriverManagerProvider;
 
 class DriverManagerProviderTest extends \PHPUnit_Framework_TestCase
 {
@@ -23,7 +23,7 @@ class DriverManagerProviderTest extends \PHPUnit_Framework_TestCase
         $driver = new DriverManagerProvider([]);
 
         $this->assertInstanceOf(
-            'Paolooo\LaravelDoctrine\DriverManagerInterface',
+            'Paolooo\LaravelDoctrine\Contracts\DriverManagerInterface',
             $driver
         );
     }

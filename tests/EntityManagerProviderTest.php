@@ -2,9 +2,9 @@
 
 use Mockery as m;
 use Doctrine\ORM\EntityManager;
-use Paolooo\LaravelDoctrine\EntityManagerProvider;
-use Paolooo\LaravelDoctrine\ConfigurationProvider;
-use Paolooo\LaravelDoctrine\DriverManagerProvider;
+use Paolooo\LaravelDoctrine\Providers\EntityManagerProvider;
+use Paolooo\LaravelDoctrine\Providers\ConfigurationProvider;
+use Paolooo\LaravelDoctrine\Providers\DriverManagerProvider;
 use Paolooo\LaravelDoctrine\CacheFactory;
 
 class EntityManagerProviderTest extends \PHPUnit_Framework_TestCase
@@ -34,7 +34,7 @@ class EntityManagerProviderTest extends \PHPUnit_Framework_TestCase
         $provider2 = EntityManagerProvider::getInstance();
 
         $this->assertInstanceOf(
-            'Paolooo\LaravelDoctrine\EntityManagerProvider',
+            'Paolooo\LaravelDoctrine\Providers\EntityManagerProvider',
             $provider
         );
         $this->assertEquals($provider, $provider2);

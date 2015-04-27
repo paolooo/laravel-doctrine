@@ -1,9 +1,9 @@
 <?php namespace Paolooo\Test;
 
 use Mockery as m;
-use Paolooo\LaravelDoctrine\EntityManagerProvider;
-use Paolooo\LaravelDoctrine\DriverManagerProvider;
-use Paolooo\LaravelDoctrine\ConfigurationProvider;
+use Paolooo\LaravelDoctrine\Providers\EntityManagerProvider;
+use Paolooo\LaravelDoctrine\Providers\DriverManagerProvider;
+use Paolooo\LaravelDoctrine\Providers\ConfigurationProvider;
 use Paolooo\LaravelDoctrine\ProxyEntityManager;
 use Paolooo\LaravelDoctrine\CacheFactory;
 

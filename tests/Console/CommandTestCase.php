@@ -1,15 +1,16 @@
 <?php namespace Paolooo\Test\Console;
 
 use Mockery as m;
+use Paolooo\Test\TestCase as TestCase;
 use Paolooo\LaravelDoctrine\CacheFactory;
-use Paolooo\LaravelDoctrine\DriverManagerProvider;
-use Paolooo\LaravelDoctrine\ConfigurationProvider;
-use Paolooo\LaravelDoctrine\EntityManagerProvider;
+use Paolooo\LaravelDoctrine\Providers\DriverManagerProvider;
+use Paolooo\LaravelDoctrine\Providers\ConfigurationProvider;
+use Paolooo\LaravelDoctrine\Providers\EntityManagerProvider;
 use Paolooo\LaravelDoctrine\ProxyEntityManager;
 use Paolooo\LaravelDoctrine\Console\DoctrineCommandProvider;
 use Paolooo\Test\VarTrait;
 
-abstract class CommandTestCase extends \Paolooo\Test\TestCase
+abstract class CommandTestCase extends TestCase
 {
     use VarTrait;
 
@@ -37,5 +38,4 @@ abstract class CommandTestCase extends \Paolooo\Test\TestCase
 
         return $commandProvider;
     }
-
 }

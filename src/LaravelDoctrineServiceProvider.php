@@ -1,6 +1,9 @@
 <?php namespace Paolooo\LaravelDoctrine;
 
 use Illuminate\Support\ServiceProvider;
+use Paolooo\LaravelDoctrine\Providers\DriverManagerProvider;
+use Paolooo\LaravelDoctrine\Providers\ConfigurationProvider;
+use Paolooo\LaravelDoctrine\Providers\EntityManagerProvider;
 
 class LaravelDoctrineServiceProvider extends ServiceProvider
 {

@@ -1,7 +1,7 @@
 <?php namespace Paolooo\Test;
 
 use Mockery as m;
-use Paolooo\LaravelDoctrine\ConfigurationProvider;
+use Paolooo\LaravelDoctrine\Providers\ConfigurationProvider;
 use Paolooo\LaravelDoctrine\CacheFactory;
 
 class ConfigurationProviderTest extends \PHPUnit_Framework_TestCase
