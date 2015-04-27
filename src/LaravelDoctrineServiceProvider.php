@@ -41,7 +41,7 @@ class LaravelDoctrineServiceProvider extends ServiceProvider
          */
         $this->app->singleton('Doctrine\ORM\EntityManager', function($app) {
 
-            $provider = $app->make('Paolooo\LaravelDoctrine\EntityManagerProvider');
+            $provider = $app->make('Paolooo\LaravelDoctrine\Providers\EntityManagerProvider');
 
             return new ProxyEntityManager($provider);
         });
@@ -52,7 +52,7 @@ class LaravelDoctrineServiceProvider extends ServiceProvider
          *
          * @return EntityManagerProvider
          */
-        $this->app->singleton('Paolooo\LaravelDoctrine\EntityManagerProvider', function() {
+        $this->app->singleton('Paolooo\LaravelDoctrine\Providers\EntityManagerProvider', function() {
 
             // Cache
             $cacheType = config('cache.default');
@@ -91,7 +91,7 @@ class LaravelDoctrineServiceProvider extends ServiceProvider
     {
         return [
             'Doctrine\ORM\EntityManager',
-            'Paolooo\LaravelDoctrine\EntityManagerProvider'
+            'Paolooo\LaravelDoctrine\Providers\EntityManagerProvider'
         ];
     }
 
