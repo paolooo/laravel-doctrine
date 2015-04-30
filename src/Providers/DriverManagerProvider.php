@@ -40,6 +40,10 @@ class DriverManagerProvider implements DriverManagerInterface
 
         $sqlite_params = array('path' => $params['database']);
 
+        if (!isset($params['username'])) {
+            $params['username'] = '';
+        }
+
         return array_merge(
             $sqlite_params,
             $params,
